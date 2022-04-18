@@ -1,4 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--Red Theme-->
     <style name="Theme.Red" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/red_love</item>
@@ -13,6 +15,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!--Green Theme-->
     <style name="Theme.Green" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/green</item>

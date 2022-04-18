@@ -52,6 +52,8 @@ public class FirstFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
+
+        //declaring textview to show the expression and answer
         textview_input = view.findViewById(R.id.textview_input);
         textview_result = view.findViewById(R.id.textview_result);
         detector = new TextRecognizer.Builder(this.getContext()).build();
@@ -66,6 +68,8 @@ public class FirstFragment extends Fragment {
 
     @SuppressLint("NewApi")
     public void openFileSystem(){
+        //open file system with filter of image only
+        //Check permission first before opening filesystem
         if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_EXTERNAL_PERMISSION_CODE);
@@ -78,7 +82,8 @@ public class FirstFragment extends Fragment {
 
     @SuppressLint("NewApi")
     public void captureImage() {
-
+        //capture image
+        //check permission first for camera and external storage where the image will be saved
         if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_EXTERNAL_PERMISSION_CODE);
@@ -86,6 +91,7 @@ public class FirstFragment extends Fragment {
             // Create new folder for image saving
             imageFolderPath = Environment.getExternalStorageDirectory().toString()
                     + "/ScanMeCalculator";
+            //creating folder if not exist
             File imagesFolder = new File(imageFolderPath);
             imagesFolder.mkdirs();
 
@@ -139,6 +145,7 @@ public class FirstFragment extends Fragment {
     }
 
     public String getPath(Uri uri) {
+        //getting the real filepath if from file system
         Cursor cursor = getContext().getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         String document_id = cursor.getString(0);
@@ -158,6 +165,7 @@ public class FirstFragment extends Fragment {
 
 
     public void ImageToText(String filePath){
+        //Use TextRecognizer to detect characters in image
         TextRecognizer textRecognizer = new TextRecognizer.Builder(getContext()).build();// getApplicationContext()).build();
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
 
@@ -201,7 +209,7 @@ public class FirstFragment extends Fragment {
                 operands.push(Integer.parseInt(stringBuffer.toString()));
                 i--;
             }
-            //Check operations
+            //Check if operations
             else if (token[i] == '+' ||
                     token[i] == '-' ||
                     token[i] == '*' ||
@@ -212,6 +220,7 @@ public class FirstFragment extends Fragment {
 
                 operator.push(token[i]);
             }else{
+                //invalid expression (not space, not a number, and not an operator)
                 validExpression = false;
                 break;
             }
@@ -227,6 +236,7 @@ public class FirstFragment extends Fragment {
         }else return 0;
     }
 
+    //solve the expression
     public static int solve(char operator, int secondOperand, int firstOperand)
     {
         switch (operator)
